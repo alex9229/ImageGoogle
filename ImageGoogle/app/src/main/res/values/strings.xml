@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">ImageGoogle</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_section1">first</string>
+    <string name="title_section2">second</string>
+    <string name="add">add</string>
+    <string name="enterText">Enter search image text</string>
+    <string name="cache_dirname">GoogleImgApp_Cache</string>
+    <string name="next">get next</string>
+</resources>
