@@ -14,8 +14,7 @@ public interface IDBStrings {
      */
     String CREATE_TABLE_IMAGES = "CREATE TABLE `IMAGES` (\n" +
             "\t`id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
-            "\t`thumbUrl`\tTEXT NOT NULL UNIQUE,\n" +
-            "\t`title`\tTEXT\n" +
+            "\t`thumbUri`\tTEXT NOT NULL UNIQUE\n" +
             ");";
 
 

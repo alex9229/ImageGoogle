@@ -3,19 +3,18 @@ package alex.imagegoogle.utils;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.support.v4.content.Loader;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.URI;
 import java.util.ArrayList;
 
 import alex.imagegoogle.GoogleFragment;
@@ -77,7 +76,7 @@ public class Load extends Loader<String> {
         }
 
         ProgressDialog dialog;
-        JSONArray resultArray;
+        ArrayList<String> resultArray;
 
         @Override
         protected void onPreExecute() {
@@ -91,7 +90,7 @@ public class Load extends Loader<String> {
         protected Void doInBackground(Void... params) {
             // TODO Auto-generated method stub
 
-            resultArray = DoSearch(start);
+            resultArray =getData(start,strSearch);
             return null;
         }
 
@@ -111,87 +110,89 @@ public class Load extends Loader<String> {
 
 
         }
-        /**
-         * Do search image
-         */
-        private JSONArray DoSearch(Integer start) {
-            JSONArray resultArray = null;
+
+        public ArrayList<String> getData(int start, String question) {
+            ArrayList<String> imageList2 = new ArrayList<String>();
+            HttpResponse response = null;
             try {
-                URL url1 = new URL("https://ajax.googleapis.com/ajax/services/search/images?" +
-                        "v=1.0&q=" + strSearch + "&rsz=5&start=" + start); //&key=ABQIAAAADxhJjHRvoeM2WF3nxP5rCBRcGWwHZ9XQzXD3SWg04vbBlJ3EWxR0b0NVPhZ4xmhQVm3uUBvvRF-VAA&userip=192.168.0.172");
-                URL url2 = new URL("https://ajax.googleapis.com/ajax/services/search/images?" +
-                        "v=1.0&q=" + strSearch + "&rsz=5&start=" + (start + 5)); //&key=ABQIAAAADxhJjHRvoeM2WF3nxP5rCBRcGWwHZ9XQzXD3SWg04vbBlJ3EWxR0b0NVPhZ4xmhQVm3uUBvvRF-VAA&userip=192.168.0.172");
+                // Create http client object to send request to server
+                HttpClient client = new DefaultHttpClient();
+                // Create URL string
+                System.out.println(strSearch);
+                String URL = "https://www.googleapis.com/customsearch/v1?key=AIzaSyD90KSCSr8FXWORmmETBi8Ij0O-lQS5eng&cx=000940462282111494871:jb70i3p1ijq&q=" + question + "&num=10&start=" + start+1;
+                System.out.println(URL);
+                // Create Request to server and get response
+                HttpGet httpget = new HttpGet();
+                httpget.setURI(new URI(URL));
+                response = client.execute(httpget);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
 
-                URLConnection connection1 = url1.openConnection();
-                URLConnection connection2 = url2.openConnection();
-                String line;
                 StringBuilder builder = new StringBuilder();
-                BufferedReader reader1 = new BufferedReader(new InputStreamReader(connection1.getInputStream()));
-                while ((line = reader1.readLine()) != null) {
-                    builder.append(line);
-                }
 
-                System.out.println("Builder string => " + builder.toString());
-//
+                for (String line = null; (line = reader.readLine()) != null; ) {
+                    builder.append(line).append("\n");
+                }
                 JSONObject json = new JSONObject(builder.toString());
+                System.out.println("2");
+                System.out.println(json);
+                JSONArray responseObject = json.getJSONArray("items");
+                for (int i = 0; i < responseObject.length(); i++) {
+                    try {
 
-                StringBuilder builder2 = new StringBuilder();
-                BufferedReader reader2 = new BufferedReader(new InputStreamReader(connection2.getInputStream()));
-                while ((line = reader2.readLine()) != null) {
-                    builder2.append(line);
-                }
-                System.out.println("Builder string => " + builder.toString());
-                JSONObject json2 = new JSONObject(builder2.toString());
-                JSONObject responseObject = json.getJSONObject("responseData");
-                resultArray = responseObject.getJSONArray("results");
-                JSONObject responseObject2 = json2.getJSONObject("responseData");
-                JSONArray resultArray2 = responseObject2.getJSONArray("results");
-                for (int i = 0; i < resultArray2.length(); i++) {
-                    resultArray.put(resultArray2.get(i));
+                        responseObject.get(i);
+                        JSONObject tempjson = new JSONObject(responseObject.get(i).toString());
+                        JSONObject tempJsonPagemap = new JSONObject(tempjson.get("pagemap").toString());
+                        String s = tempJsonPagemap.getString("cse_image");
+                        s=remSlash(s);
+                        imageList2.add(s.substring(s.indexOf(':') + 2, s.length() - 3));
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
                 }
 
-            } catch (MalformedURLException e) {
-                // TODO Auto-generated catch block
+            } catch (Exception e) {
                 e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (JSONException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                return null;
+
             }
-            return resultArray;
+            return imageList2;
         }
+
+        private String remSlash(String text){
+            String tmp;
+            while(text.contains("\\")){
+                tmp="";
+                if(text.indexOf("\\")!=0){tmp=text.substring(0,text.indexOf("\\"));}
+                if(text.indexOf("\\")!=text.length()-1){tmp=tmp+text.substring(text.indexOf("\\")+1,text.length());}
+                text=tmp;
+            }
+            return text;}
+
+
 
         /**
          * get Arraylist with Image from JSON Array
          */
-        public ArrayList<GoogleImageBean> getImageList(JSONArray resultArray) {
+        public ArrayList<GoogleImageBean> getImageList(ArrayList<String> imageList) {
             ArrayList<GoogleImageBean> listImages = new ArrayList<GoogleImageBean>();
             GoogleImageBean bean;
 
-            try {
-                if (resultArray != null) {
-                    for (int i = 0; i < resultArray.length(); i++) {
-                        JSONObject obj;
-                        obj = resultArray.getJSONObject(i);
-                        bean = new GoogleImageBean();
-                        bean.setTitle(obj.getString("title"));
-                        bean.setThumbUrl(obj.getString("tbUrl"));
-                        System.out.println("Thumb URL => " + obj.getString("tbUrl"));
-                        listImages.add(bean);
 
-                    }
-                    return listImages;
+            if (imageList != null) {
+                for (int i = 0; i < imageList.size(); i++) {
+                    bean = new GoogleImageBean();
+                    bean.setThumbUri(imageList.get(i));
+
+                    System.out.println("Thumb URL => " + imageList.get(i));
+                    listImages.add(bean);
+
                 }
-            } catch (JSONException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
 
-            return null;
+            }
+            return listImages;
         }
+
+
+
     }
 
 }

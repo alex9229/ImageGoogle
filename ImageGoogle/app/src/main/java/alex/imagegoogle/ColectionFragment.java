@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import alex.imagegoogle.adapters.GoogleImageBean;
 import alex.imagegoogle.adapters.ListViewImageAdapterCollec;
@@ -63,6 +62,7 @@ public class ColectionFragment extends Fragment {
     public void SetListViewAdapter(ArrayList<Object> images) {
         if (images != null) {
             adapter = new ListViewImageAdapterCollec(getActivity(), images);
+
             listViewImages.setAdapter(adapter);
         }
 
@@ -73,14 +73,12 @@ public class ColectionFragment extends Fragment {
     public ArrayList<Object> getImageList() {
         ArrayList<Object> listImages = new ArrayList<Object>();
         GoogleImageBean bean;
-        HashMap<String, String> check = Utill.getallimages(getContext());
+        ArrayList<String> check = Utill.getallimages(getContext());
         if (check != null) {
-            if (check.keySet().size() != 0) {
-                Object[] key = check.keySet().toArray();
-                for (int i = 0; i < check.keySet().size() - 1; i++) {
+            if (check.size() != 0) {
+                for (int i = 0; i < check.size() - 1; i++) {
                     bean = new GoogleImageBean();
-                    bean.setTitle(key[i].toString());
-                    bean.setThumbUrl(check.get(key[i].toString()));
+                    bean.setThumbUri(check.get(i));
                     listImages.add(bean);
                 }
                 return listImages;
@@ -94,6 +92,7 @@ public class ColectionFragment extends Fragment {
      * for add new image
      */
     public void onCheck() {
+
         listImages = getImageList();
         SetListViewAdapter(listImages);
     }

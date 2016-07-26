@@ -14,8 +14,8 @@ android:id="@+id/relativeLayout1"
     	<ImageView 
     		android:id="@+id/imageView01" 
     		android:layout_height="100dip" 
-    		android:src="@drawable/icon" 
-    		android:layout_width="100dip" 
+    		android:src="@drawable/icon"
+    		android:layout_width="100dip"
     		android:scaleType="fitXY">
     	</ImageView>
         <CheckBox
@@ -24,14 +24,7 @@ android:id="@+id/relativeLayout1"
             android:text="@string/add"
             android:id="@+id/checkBox" />
     </LinearLayout>
-    	<TextView
-    		android:id="@+id/textView1" 
-    		android:layout_height="wrap_content" 
-    		android:layout_width="wrap_content"
-    		android:textColor="#FF2F22"
-    		android:textStyle="bold"
-    		android:textSize="16sp">
-    	</TextView>
+
 
 
 

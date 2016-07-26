@@ -81,8 +81,10 @@ public class GoogleFragment extends Fragment implements LoaderManager.LoaderCall
      * method for move down to last
      */
     public void onLast() {
+
+
         System.out.println("Search string => " + strSearch);
-        point = point + 10;
+        point = point + 1;
 
         loader = new Load(getActivity(), strSearch, point);
         loader.forceLoad();
@@ -162,8 +164,7 @@ public class GoogleFragment extends Fragment implements LoaderManager.LoaderCall
     public ArrayList<GoogleImageBean> setchange(ArrayList<GoogleImageBean> listImages1, ArrayList<GoogleImageBean> listImages2) {
         for (int i = 0; i < listImages2.size(); i++) {
             GoogleImageBean bean = new GoogleImageBean();
-            bean.setThumbUrl(listImages2.get(i).getThumbUrl());
-            bean.setTitle(listImages2.get(i).getTitle());
+            bean.setThumbUri(listImages2.get(i).getThumbUri());
             listImages1.add(bean);
         }
         return listImages1;

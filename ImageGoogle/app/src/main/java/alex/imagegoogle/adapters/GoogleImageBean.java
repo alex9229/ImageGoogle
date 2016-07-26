@@ -6,22 +6,14 @@ package alex.imagegoogle.adapters;
 
 
 public class GoogleImageBean {
-    String thumbUrl;    //URL of Image
-    String title;        //Title of Image
+    String thumbUri;    //URL of Image
 
-    public String getThumbUrl() {
-        return thumbUrl;
+    public String getThumbUri() {
+        return thumbUri;
     }
 
-    public void setThumbUrl(String url) {
-        this.thumbUrl = url;
+    public void setThumbUri(String uri) {
+        this.thumbUri = uri;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 }

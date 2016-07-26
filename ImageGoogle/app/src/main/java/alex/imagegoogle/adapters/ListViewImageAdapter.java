@@ -7,8 +7,6 @@ package alex.imagegoogle.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +14,6 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -24,8 +21,8 @@ import alex.imagegoogle.ColectionFragment;
 import alex.imagegoogle.GoogleFragment;
 import alex.imagegoogle.R;
 import alex.imagegoogle.ShowImage;
-import alex.imagegoogle.db.Utill;
 import alex.imagegoogle.utils.ImageLoader;
+import alex.imagegoogle.utils.Save;
 
 /**
  * Created by alex on 10.11.15.
@@ -60,7 +57,7 @@ public class ListViewImageAdapter extends BaseAdapter {
 
     public static class ViewHolder {
         public ImageView imgViewImage;
-        public TextView txtViewTitle;
+
         public CheckBox checkBox;
     }
 
@@ -75,26 +72,24 @@ public class ListViewImageAdapter extends BaseAdapter {
         holder = new ViewHolder();
 
         holder.imgViewImage = (ImageView) vi.findViewById(R.id.imageView01);
-        holder.txtViewTitle = (TextView) vi.findViewById(R.id.textView1);
+
         holder.checkBox = (CheckBox) vi.findViewById(R.id.checkBox);
         holder.checkBox.setOnCheckedChangeListener(checkList);
         holder.checkBox.setTag(position);
         holder.imgViewImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO open view of image
                 Intent imageopen = new Intent(activity, ShowImage.class);
-                imageopen.putExtra("Image", imageBean.getThumbUrl());
+                imageopen.putExtra("Image", imageBean.getThumbUri());
 //					imageLoader.DisplayImage(imageBean.getThumbUrl(), activity);
                 activity.startActivity(imageopen);
             }
         });
         vi.setTag(holder);
 
-        holder.imgViewImage.setTag(imageBean.getThumbUrl());
-        imageLoader.DisplayImage(imageBean.getThumbUrl(), activity, holder.imgViewImage);
+        holder.imgViewImage.setTag(imageBean.getThumbUri());
+        imageLoader.DisplayImage(imageBean.getThumbUri(), activity, holder.imgViewImage);
 
-        holder.txtViewTitle.setText(Html.fromHtml(imageBean.getTitle()));
         return vi;
     }
 
@@ -104,10 +99,9 @@ public class ListViewImageAdapter extends BaseAdapter {
                                      boolean isChecked) {
             if (isChecked) {
 
-                new Utill().setimages(activity, listImages.get(Integer.parseInt(buttonView.getTag().toString())).getThumbUrl(),
-                        listImages.get(Integer.parseInt(buttonView.getTag().toString())).getTitle());
-                ColectionFragment.newInstance().onCreate(new Bundle());
-                ColectionFragment.newInstance().onCheck();
+                new Save().saveImage(listImages.get(Integer.parseInt(buttonView.getTag().toString())).getThumbUri());
+
+
             }
 
         }

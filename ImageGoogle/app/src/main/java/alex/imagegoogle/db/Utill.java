@@ -7,7 +7,6 @@ import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Сreate by alex
@@ -19,19 +18,15 @@ public class Utill {
      * Sets the image
      *
      * @param cont     the cont
-     * @param thumbUrl the URL of image
-     * @param title    the Title of image
+     * @param thumbUri the URI of image
      */
-    public static void setimages(Context cont, String thumbUrl, String title) {
+    public static void setimages(Context cont, String thumbUri) {
 
         DBhelper dbHelper = new DBhelper(cont, "", null, 1);
         SQLiteDatabase sdb;
         sdb = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-
-        System.out.println(title);
-        values.put("thumbUrl", thumbUrl);
-        values.put("title", title);
+        values.put("thumbUri", thumbUri);
         sdb.insert("IMAGES", null, values);
 
         dbHelper.close();
@@ -46,22 +41,24 @@ public class Utill {
      * @param cont the cont
      * @return the images HashMap<title,thumbUrl>
      */
-    public static HashMap<String, String> getallimages(Context cont) {
+    public static ArrayList<String> getallimages(Context cont) {
         DBhelper dbHelper = new DBhelper(cont, "", null, 1);
         SQLiteDatabase sdb;
 
         sdb = dbHelper.getWritableDatabase();
 
-        HashMap<String, String> imag = new HashMap();
+        ArrayList<String> imag = new ArrayList();
         try {
             Cursor c = sdb.query("IMAGES", null, null, null, null, null, null);
             c.moveToFirst();
             do {
-                imag.put(c.getString(c.getColumnIndex("title")), c.getString(c.getColumnIndex("thumbUrl")));
+                imag.add(c.getString(c.getColumnIndex("thumbUrl")+2));
+
             } while (c.moveToNext());
         } catch (CursorIndexOutOfBoundsException e) {
             imag = null;
         }
+        System.out.println(imag);
         dbHelper.close();
         sdb.close();
         return imag;
