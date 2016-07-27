@@ -76,7 +76,7 @@ public class ColectionFragment extends Fragment {
         ArrayList<String> check = Utill.getallimages(getContext());
         if (check != null) {
             if (check.size() != 0) {
-                for (int i = 0; i < check.size() - 1; i++) {
+                for (int i = 0; i < check.size() ; i++) {
                     bean = new GoogleImageBean();
                     bean.setThumbUri(check.get(i));
                     listImages.add(bean);

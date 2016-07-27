@@ -17,7 +17,6 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-import alex.imagegoogle.ColectionFragment;
 import alex.imagegoogle.GoogleFragment;
 import alex.imagegoogle.R;
 import alex.imagegoogle.ShowImage;
@@ -81,7 +80,6 @@ public class ListViewImageAdapter extends BaseAdapter {
             public void onClick(View v) {
                 Intent imageopen = new Intent(activity, ShowImage.class);
                 imageopen.putExtra("Image", imageBean.getThumbUri());
-//					imageLoader.DisplayImage(imageBean.getThumbUrl(), activity);
                 activity.startActivity(imageopen);
             }
         });

@@ -3,6 +3,7 @@ package alex.imagegoogle.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 import alex.imagegoogle.R;
+import alex.imagegoogle.ShowImage;
 
 /**
  * Created by alex on 10.11.15.
@@ -63,7 +65,14 @@ public class ListViewImageAdapterCollec extends BaseAdapter {
             holder = new ViewHolder();
 
             holder.imgViewImage = (ImageView) vi.findViewById(R.id.imageView01);
-
+            holder.imgViewImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent imageopen = new Intent(activity, ShowImage.class);
+                    imageopen.putExtra("Image", imageBean.getThumbUri());
+                    activity.startActivity(imageopen);
+                }
+            });
 
 
             vi.setTag(holder);

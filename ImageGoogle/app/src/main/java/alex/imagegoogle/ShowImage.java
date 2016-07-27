@@ -1,11 +1,10 @@
 package alex.imagegoogle;
 
-import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
 import java.io.File;
@@ -15,7 +14,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import alex.imagegoogle.utils.Utils;
@@ -36,8 +34,9 @@ public class ShowImage extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.imView);
         thumbUrl = getIntent().getStringExtra("Image");
 
-
-        imageView.setImageBitmap(getBitmap(thumbUrl));
+        if(thumbUrl.substring(0,2).equals("htt")){
+        imageView.setImageBitmap(getBitmap(thumbUrl));}
+        else {imageView.setImageURI(Uri.parse(thumbUrl));}
     }
 
     /**
