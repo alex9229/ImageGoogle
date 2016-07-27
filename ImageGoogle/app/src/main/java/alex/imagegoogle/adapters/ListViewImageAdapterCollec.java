@@ -16,16 +16,20 @@ import java.util.ArrayList;
 import alex.imagegoogle.R;
 import alex.imagegoogle.ShowImage;
 
-/**
- * Created by alex on 10.11.15.
- */
+
 public class ListViewImageAdapterCollec extends BaseAdapter {
 
     private Activity activity;
     public ArrayList<Object> listImages;
     private static LayoutInflater inflater = null;
 
-
+    /**
+     * Gets the allimage.
+     *
+     * @param a using for context
+     * @param listImages list of image
+     *
+     */
     public ListViewImageAdapterCollec(Activity a, ArrayList<Object> listImages) {
         activity = a;
         this.listImages = listImages;
@@ -33,11 +37,7 @@ public class ListViewImageAdapterCollec extends BaseAdapter {
 
     }
 
-    public void setchange(ArrayList<Object> listImages) {
-        for (int i = 0; i < listImages.size(); i++) {
-            this.listImages.add(listImages.get(i));
-        }
-    }
+
 
     public int getCount() {
         return listImages.size();
@@ -55,7 +55,14 @@ public class ListViewImageAdapterCollec extends BaseAdapter {
     public static class ViewHolder {
         public ImageView imgViewImage;
     }
-
+    /**
+     * Gets the allimage.
+     *
+     * @param convertView
+     * @param parent for context
+     * @param position
+     * @return View of image>
+     */
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
         final ViewHolder holder;

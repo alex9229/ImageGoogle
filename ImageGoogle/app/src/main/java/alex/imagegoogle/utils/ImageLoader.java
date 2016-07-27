@@ -175,7 +175,7 @@ public class ImageLoader {
                         }
                         Bitmap bmp = getBitmap(photoToLoad.url);
                         cache.put(photoToLoad.url, bmp);
-                        if (((String) photoToLoad.imageView.getTag()).equals(photoToLoad.url)) {
+                        if (photoToLoad.imageView.getTag().equals(photoToLoad.url)) {
                             BitmapDisplayer bd = new BitmapDisplayer(bmp, photoToLoad.imageView);
                             Activity a = (Activity) photoToLoad.imageView.getContext();
                             a.runOnUiThread(bd);

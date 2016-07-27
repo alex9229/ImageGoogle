@@ -15,7 +15,7 @@ import alex.imagegoogle.adapters.ListViewImageAdapterCollec;
 import alex.imagegoogle.db.Utill;
 
 /**
- * Created by alex on 10.11.15.
+ * Created by alex on
  */
 public class ColectionFragment extends Fragment {
     private static ColectionFragment fragment;
@@ -58,7 +58,9 @@ public class ColectionFragment extends Fragment {
         return view;
     }
 
-
+    /**
+     * Adaptor for ListView
+     */
     public void SetListViewAdapter(ArrayList<Object> images) {
         if (images != null) {
             adapter = new ListViewImageAdapterCollec(getActivity(), images);

@@ -23,9 +23,7 @@ import alex.imagegoogle.ShowImage;
 import alex.imagegoogle.utils.ImageLoader;
 import alex.imagegoogle.utils.Save;
 
-/**
- * Created by alex on 10.11.15.
- */
+
 public class ListViewImageAdapter extends BaseAdapter {
 
     private Activity activity;
@@ -59,11 +57,18 @@ public class ListViewImageAdapter extends BaseAdapter {
 
         public CheckBox checkBox;
     }
-
+    /**
+     * Gets the view to list.
+     *
+     * @param convertView
+     * @param parent
+     * @param position
+     * @return the images HashMap<title,thumbUrl>
+     */
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
         ViewHolder holder;
-        final GoogleImageBean imageBean = (GoogleImageBean) listImages.get(position);
+        final GoogleImageBean imageBean = listImages.get(position);
         if (position == listImages.size() - 1) {
             GoogleFragment.newInstance().onLast();
         }
@@ -94,7 +99,7 @@ public class ListViewImageAdapter extends BaseAdapter {
 
     CompoundButton.OnCheckedChangeListener checkList = new CompoundButton.OnCheckedChangeListener() {
         public void onCheckedChanged(CompoundButton buttonView,
-                                     boolean isChecked) {
+                                     boolean isChecked) { //onChecked in found list
             if (isChecked) {
 
                 new Save().saveImage(listImages.get(Integer.parseInt(buttonView.getTag().toString())).getThumbUri());
